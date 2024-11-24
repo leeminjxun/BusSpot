@@ -18,20 +18,6 @@ def render_template(request, filename):
     # templates/bus_reservation/ 경로에 있는 HTML 파일 렌더링
     return render(request, f'bus_reservation/{filename}.html')
 
-
-# #CSRF TEST
-# @csrf_exempt
-# def save_reservation(request):
-#     if request.method == 'POST':
-#         # JSON 데이터 읽기
-#         import json
-#         data = json.loads(request.body)
-#         print(data)  # 디버깅용
-#         # 요청 데이터 처리 로직 추가
-#         return JsonResponse({'message': '예약이 완료되었습니다!'})
-#     return JsonResponse({'error': '허용되지 않은 요청입니다.'}, status=403)
-
-
 # 모든 예약 조회 API
 @api_view(['GET'])
 def get_reservations(request):
