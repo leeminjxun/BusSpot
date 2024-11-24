@@ -22,11 +22,11 @@ class Reservation(models.Model) :
     
 
 class BusSchedule(models.Model):
-        
     departure_city = models.CharField(max_length=100)  # 출발지 도시
     arrival_city = models.CharField(max_length=100)    # 도착지 도시
     departure_time = models.TimeField()               # 출발 시간
     arrival_time = models.TimeField()                 # 도착 시간
+    duration = models.CharField(max_length=50, default=None, null=True)         # 소요 시간 (문자열 형식)
     bus_class = models.CharField(max_length=50)       # 버스 등급 (예: 일반, 프리미엄 등)
     seats_available = models.PositiveIntegerField()   # 잔여 좌석 수
 
@@ -36,7 +36,7 @@ class BusSchedule(models.Model):
         ordering = ['departure_time']
 
     def __str__(self):
-        return f"{self.departure_city} to {self.arrival_city} at {self.departure_time}"
+        return f"{self.departure_city} to {self.arrival_city} at {self.departure_time.strftime('%H:%M')}"
     
 
 # 주요 요소:

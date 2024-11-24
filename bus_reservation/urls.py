@@ -10,6 +10,10 @@ urlpatterns = [
     path('', views.main, name='main'),  
     path('<str:filename>.html', views.render_template, name='render_template'),  # 동적 URL 처리
     
+
+    # 버스 시간표 조회 경로 추가
+    path('check_schedule/', views.check_schedule, name='check_schedule'),
+
     # API 경로
     # 예약 저장 (POST)
     path('reservation/create/', create_reservation, name='create_reservation'),

@@ -3,7 +3,9 @@ from .serializers import ReservationSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Reservation
+from .models import BusSchedule  # BusSchedule 모델 임포트
 from rest_framework import status
+
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
@@ -17,6 +19,25 @@ def main(request):
 def render_template(request, filename):
     # templates/bus_reservation/ 경로에 있는 HTML 파일 렌더링
     return render(request, f'bus_reservation/{filename}.html')
+
+# 버스 시간표 조회 뷰 추가
+def check_schedule(request):
+    # 출발지와 도착지, 날짜를 GET 파라미터로부터 가져오기
+    departure = request.GET.get('departure')
+    arrival = request.GET.get('arrival')
+    date = request.GET.get('date')
+
+    # 출발지와 도착지에 맞는 모든 버스 시간표 조회
+    bus_schedules = BusSchedule.objects.filter(departure_city=departure, arrival_city=arrival)
+
+    context = {
+        'departure': departure,
+        'arrival': arrival,
+        'date': date,
+        'bus_schedules': bus_schedules,
+    }
+
+    return render(request, 'bus_reservation/check_schedule.html', context)
 
 # 모든 예약 조회 API
 @api_view(['GET'])

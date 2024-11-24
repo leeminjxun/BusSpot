@@ -220,7 +220,7 @@
             }
             
             const queryParams = `?departure=${encodeURIComponent(departure)}&arrival=${encodeURIComponent(arrival)}&date=${encodeURIComponent(date)}`;
-            window.location.href = `check_schedule.html${queryParams}`;
+            window.location.href = `/check_schedule/${queryParams}`;
         });
     });
 
