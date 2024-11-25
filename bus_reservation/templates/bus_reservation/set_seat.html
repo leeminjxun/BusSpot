@@ -314,8 +314,9 @@
           return response.json();
         })
         .then(data => {
+          // 성공 시 예약 상세 페이지로 이동
           alert("예약이 완료되었습니다!");
-          window.location.href = '/Reservation_details.html';
+          window.location.href = `/reservation_details.html?id=${data.id}`;
         })
         .catch(error => {
           console.error("Error:", error);

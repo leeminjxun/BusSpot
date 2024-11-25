@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.urls import path
 from bus_reservation import views
-from .views import create_reservation, get_reservations,reservation_detail
+from .views import ReservationDetailAPIView
+
 
 app_name='reservation'
 
@@ -18,10 +19,14 @@ urlpatterns = [
 
     # API 경로
     # 예약 저장 (POST)
-    path('reservation/create/', create_reservation, name='create_reservation'),
+    path('reservation/create/', views.create_reservation, name='create_reservation'),
     
     # 모든 예약 조회 (GET)
-    path('reservations/', get_reservations, name='get_reservations'),    
+    path('reservations/', views.get_reservations, name='get_reservations'),    
     # 특정 예약 상세 조회 (GET)
-    path('reservation/<int:pk>/', reservation_detail, name='reservation_detail'),
+    path('reservation/<int:pk>/', views.reservation_detail, name='reservation_detail'),
+
+    #데이터를 JSON으로 반환하는 API
+    path('api/reservation/<int:pk>/', ReservationDetailAPIView.as_view(), name='reservation-detail'),
+
 ]
