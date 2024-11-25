@@ -17,25 +17,29 @@
         color: #333;
     }
 
-    /* 상단 내비게이션 스타일 */
     .navbar {
-            background-color: #fff;
-            padding: 10px 20px;
-            border-bottom: 1px solid #ddd;
-        }
+        background-color: #fff;
+        padding: 10px 20px;
+        border-bottom: 1px solid #ddd;
+    }
 
-        .navbar h1 {
-            font-size: 24px;
-            margin: 0;
-        }
+    .navbar h1 {
+        font-size: 24px;
+        text-align: left;
+        margin: 0;
+        margin-left: 300px; /* 오른쪽으로 이동시키는 간격 설정 */
+    }
 
-        .navbar a {
-            text-decoration: none;
-            color: #007bff;
-            font-size: 14px;
-            margin-right: 10px;
-        }
+    .navbar div{
+        margin-left: 300px; /* 오른쪽으로 이동시키는 간격 설정 */
+    }
 
+    .navbar a {
+        text-decoration: none;
+        color: #007bff;
+        font-size: 14px;
+        margin-right: 10px;
+    }
 
     .table-container {
         max-width: 1200px;
@@ -65,8 +69,8 @@
     }
 
     .btn-container {
-        text-align: right;
-        margin-top: 10px;
+        text-align: center; /* 버튼을 가운데 정렬 */
+        margin-top: 20px;
     }
 
     .btn {
@@ -88,7 +92,7 @@
 <body>
   <!-- 상단 내비게이션 -->
   <div class="navbar">
-    <a href="#">홈</a> &gt; <a href="#">고속버스예매</a> &gt; <span>예매정보입력</span>
+    <div><a href="#">홈</a> &gt; <a href="#">고속버스예매</a> &gt; <a href="#">예매정보확인</a></div>
     <h1>BusSpot</h1>
   </div>
 
@@ -97,7 +101,6 @@
     <table>
       <thead>
         <tr>
-          {% comment %} <th>선택</th> {% endcomment %}
           <th>예매 ID</th>
           <th>출발 지역</th>
           <th>도착 지역</th>
@@ -113,41 +116,44 @@
       </tbody>
     </table>
     <div class="btn-container">
-      <button class="btn">예약 취소/환불</button>
+      <button class="btn" onclick="goHome()">홈으로 돌아가기</button>
     </div>
   </div>
   <script>
-  
     const reservationId = new URLSearchParams(window.location.search).get("id");
     const tableBody = document.getElementById("reservation-table");
 
- // API 호출하여 예약 정보 가져오기
- fetch(`http://127.0.0.1:8000/api/reservation/${reservationId}/`)
- .then(response => {
-  if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-  }
-  return response.json();
-})
-.then(reservation => {
-  //const tableBody = document.getElementById("reservation-table").getElementsByTagName("tbody")[0];
-  const row = document.createElement("tr");
-  row.innerHTML = `
-      <td>${reservation.id}</td>
-      <td>${reservation.departure}</td>
-      <td>${reservation.arrival}</td>
-      <td>${reservation.date}</td>
-      <td>${reservation.departureTime}</td>
-      <td>${reservation.arrivalTime}</td>
-      <td>${reservation.seatNumber}</td>
-      <td>${reservation.grade}</td>
-  `;
-  tableBody.appendChild(row);
-})
+    // API 호출하여 예약 정보 가져오기
+    fetch(`http://127.0.0.1:8000/api/reservation/${reservationId}/`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(reservation => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${reservation.id}</td>
+        <td>${reservation.departure}</td>
+        <td>${reservation.arrival}</td>
+        <td>${reservation.date}</td>
+        <td>${reservation.departureTime}</td>
+        <td>${reservation.arrivalTime}</td>
+        <td>${reservation.seatNumber}</td>
+        <td>${reservation.grade}</td>
+      `;
+      tableBody.appendChild(row);
+    })
     .catch(error => {
-        console.error("Error:", error);
-        alert("예약 정보를 불러오는 중 문제가 발생했습니다.");
+      console.error("Error:", error);
+      alert("예약 정보를 불러오는 중 문제가 발생했습니다.");
     });
+
+    // 홈으로 돌아가기 함수
+    function goHome() {
+      window.location.href = "/main.html"; // main.html 페이지로 이동
+    }
   </script>
 </body>
 </html>

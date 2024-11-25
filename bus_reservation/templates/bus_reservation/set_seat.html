@@ -18,22 +18,28 @@
 
     /* 상단 내비게이션 스타일 */
     .navbar {
-            background-color: #fff;
-            padding: 10px 20px;
-            border-bottom: 1px solid #ddd;
+        background-color: #fff;
+        padding: 10px 20px;
+        border-bottom: 1px solid #ddd;
         }
 
-        .navbar h1 {
-            font-size: 24px;
-            margin: 0;
-        }
-
-        .navbar a {
-            text-decoration: none;
-            color: #007bff;
-            font-size: 14px;
-            margin-right: 10px;
-        }
+    .navbar h1 {
+        font-size: 24px;
+        text-align: left;
+        margin: 0;
+        margin-left: 300px; /* 오른쪽으로 이동시키는 간격 설정 */
+    }
+  
+    .navbar div{
+        margin-left: 300px; /* 오른쪽으로 이동시키는 간격 설정 */
+    }
+  
+    .navbar a {
+        text-decoration: none;
+        color: #007bff;
+        font-size: 14px;
+        margin-right: 10px;
+    }
 
     .container {
         max-width: 1200px;
@@ -162,11 +168,11 @@
   </style>
 </head>
 <body>
-  <!-- 상단 내비게이션 -->
-  <div class="navbar">
-    <a href="#">홈</a> &gt; <a href="#">고속버스예매</a> &gt; <span>예매정보입력</span>
-    <h1>BusSpot</h1>
-  </div>
+    <!-- 상단 내비게이션 -->
+    <div class="navbar">
+      <div><a href="#">홈</a> &gt; <a href="#">고속버스예매</a> &gt; <a href="#">예매정보확인</a></div>
+      <h1>BusSpot</h1>
+    </div>
 
    <div class="container">
     <div class="left-panel">
@@ -328,7 +334,3 @@
   
 </body>
 </html>
-
-{% comment %} 
-버스 좌석 1~15까지 4개 선택 문제 없음
- but 16 이상부터 곤란  {% endcomment %}
