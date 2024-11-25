@@ -39,6 +39,30 @@ def check_schedule(request):
 
     return render(request, 'bus_reservation/check_schedule.html', context)
 
+def set_seat(request):
+    # URL 매개변수 추출
+    schedule_id = request.GET.get('schedule_id')
+    departure = request.GET.get('departure')
+    arrival = request.GET.get('arrival')
+    date = request.GET.get('date')
+
+    # BusSchedule 모델에서 해당 ID 조회
+    try:
+        schedule = BusSchedule.objects.get(id=schedule_id)
+    except BusSchedule.DoesNotExist:
+        return render(request, 'bus_reservation/error.html', {
+            'message': '해당 스케줄을 찾을 수 없습니다.'
+        })
+
+    context = {
+        'schedule': schedule,
+        'departure': departure,
+        'arrival': arrival,
+        'date': date,
+    }
+
+    return render(request, 'bus_reservation/set_seat.html', context)
+
 # 모든 예약 조회 API
 @api_view(['GET'])
 def get_reservations(request):
@@ -54,7 +78,6 @@ def create_reservation(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 @api_view(['GET','PUT','DELETE'])
 def reservation_detail(request, pk):

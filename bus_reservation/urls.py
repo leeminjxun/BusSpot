@@ -14,6 +14,8 @@ urlpatterns = [
     # 버스 시간표 조회 경로 추가
     path('check_schedule/', views.check_schedule, name='check_schedule'),
 
+    path('set_seat.html/', views.set_seat, name='set_seat'),  # 추가
+
     # API 경로
     # 예약 저장 (POST)
     path('reservation/create/', create_reservation, name='create_reservation'),
