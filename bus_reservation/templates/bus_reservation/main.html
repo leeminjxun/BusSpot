@@ -16,43 +16,41 @@
             color: #333;
         }
 
-        /* 스타일 설정 */
         .navbar {
-            background-color: #0056b3; /* 배경색 */
-            border-bottom: 1px solid #e9ecef; /* 하단 경계선 */
-            text-align: left;
+            background-color: #0056b3; /* 파란색 배경 */
+            padding: 15px 30px; /* 상하, 좌우 패딩 추가 */
+            color: #fff; /* 텍스트 색상 흰색으로 설정 */
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
         }
-
-        .navbar-brand {
-            margin-left: 100px; /* 네비게이션 아이템을 오른쪽으로 100px 이동 */
-            font-size: 1.25rem; /* 브랜드 크기 */
-            font-weight: bold; /* 굵기 */
+        
+        .navbar .navbar-brand {
+            font-size: 1.5rem; /* 브랜드 텍스트 크기 조정 */
+            font-weight: bold; /* 굵은 글씨 */
+            color: #fff; /* 텍스트 흰색 */
+            margin-left: 320px; /* 오른쪽으로 320px 이동 */
         }
-
-        .navbar-nav {
-            margin-left: 100px; /* 네비게이션 아이템을 오른쪽으로 100px 이동 */
-            text-align: center;
-        }
-
+        
         .navbar-nav .nav-link {
-            color: #6c757d; /* 기본 텍스트 색상 */
-            font-weight: 500; /* 텍스트 굵기 */
-            margin-right: 1rem; /* 간격 */
+            color: #fff; /* 네비게이션 링크 색상 흰색 */
+            margin-right: 20px; /* 링크 간격 추가 */
+            font-size: 1rem; /* 폰트 크기 */
+            font-weight: 500; /* 굵기 */
         }
-
+        
         .navbar-nav .nav-link:hover {
-            color: #000; /* 호버 시 색상 */
-            text-decoration: none; /* 텍스트 밑줄 제거 */
+            color: #ffd700; /* 호버 시 황금색 */
+            text-decoration: underline; /* 밑줄 추가 */
+        }
+        
+        .navbar-nav .nav-link.active {
+            color: #ffd700; /* 활성화된 링크 색상 황금색 */
+            font-weight: bold; /* 굵은 글씨 */
         }
 
-        .navbar-nav .nav-link.active {
-            color: #000; /* 활성 링크 색상 */
-            font-weight: bold; /* 활성 링크 굵기 */
-        }
 
         /* 컨테이너 스타일 */
         .container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 40px auto;  /* 상하 여백 늘리기 */
             padding: 40px;  /* 상하 여백 늘리기 */
             background-color: #fff;
@@ -120,7 +118,7 @@
         }
 
         .search-button {
-            width: 900px;
+            width: 1200px;
             padding: 15px;  /* 상하 여백은 그대로 두고 */
             background-color: #333;
             color: #fff;
@@ -146,36 +144,34 @@
 </head>
 <body>
 
-    <!-- 상단 내비게이션
-    <div class="navbar">
-        <div class="navbar-container">
-            <a href="#">홈</a> &gt; <a href="#">고속버스예매</a> &gt; <a href="#">예매정보확인</a>
-            <button class="reservation-button" onclick="goToReservation()">예약 조회</button>
-            <h1>BusSpot</h1>
-        </div> 
-    </div> -->
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">Navbar</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Pricing</a>
-              </li>
-            </ul>
-          </div>
+            <a class="navbar-brand" href="#">BusSpot</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">고속버스예매</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">예매정보확인</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">운행정보</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">이용안내</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">고객지원</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
+    
 
     <div class="container">
         <!-- 타이틀 -->
