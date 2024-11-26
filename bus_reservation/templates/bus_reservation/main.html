@@ -16,6 +16,7 @@
 
         /* 상단 내비게이션 스타일 */
         .navbar {
+            max-width: 900px;
             background-color: #fff;
             padding: 10px 20px;
             border-bottom: 1px solid #ddd;
@@ -25,11 +26,6 @@
             font-size: 24px;
             text-align: left;
             margin: 0;
-            margin-left: 300px; /* 오른쪽으로 이동시키는 간격 설정 */
-        }
-    
-        .navbar div{
-            margin-left: 300px; /* 오른쪽으로 이동시키는 간격 설정 */
         }
     
         .navbar a {
@@ -38,7 +34,28 @@
             font-size: 14px;
             margin-right: 10px;
         }
-    
+
+        .navbar-container {
+            margin-left: 210px; /* 오른쪽으로 이동시키는 간격 설정 */
+        }
+        /* 예약 조회 버튼 스타일 */
+        .navbar .reservation-button {
+            margin-left: 20px; /* 버튼 간격 */
+            padding: 5px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .navbar .reservation-button:hover {
+            background-color: #0056b3;
+            text-align: right;
+            
+        }
 
         /* 컨테이너 스타일 */
         .container {
@@ -138,9 +155,13 @@
 
     <!-- 상단 내비게이션 -->
     <div class="navbar">
-        <div><a href="#">홈</a> &gt; <a href="#">고속버스예매</a> &gt; <a href="#">예매정보확인</a></div>
-        <h1>BusSpot</h1>
+        <div class="navbar-container">
+            <a href="#">홈</a> &gt; <a href="#">고속버스예매</a> &gt; <a href="#">예매정보확인</a>
+            <button class="reservation-button" onclick="goToReservation()">예약 조회</button>
+            <h1>BusSpot</h1>
+        </div>
     </div>
+
 
     <div class="container">
         <!-- 타이틀 -->
@@ -235,6 +256,11 @@
         const url = type === 'arrival' ? 'arrival_search.html' : 'department_search.html';
         window.open(url, 'searchPopup', 'width=500,height=600');
     }
+
+    function goToReservation() {
+        window.location.href = "/reservation_details.html"; // 예약 조회 페이지 경로 설정
+    }
+
 </script>
 
 
