@@ -281,6 +281,7 @@
         <p><strong>출발 시간:</strong> {{ schedule.departure_time|date:"H:i" }}</p>
         <p><strong>도착 시간:</strong> {{ schedule.arrival_time|date:"H:i" }}</p>
         <p><strong>소요 시간:</strong> {{ schedule.duration }}</p>
+        <p><strong>예약된 좌석:</strong> {{ reserved_seats }}</p>
         <hr>
         <h2>선택 정보</h2>
         <p><strong>선택된 좌석:</strong> <span id="selected-seats">없음</span></p>
@@ -295,75 +296,109 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const seats = document.querySelectorAll(".seat");
-      const selectedSeats = document.getElementById("selected-seats");
-      const seatCount = document.getElementById("seat-count");
-      const totalPrice = document.getElementById("total-price");
-      const seatPrice = 22300;
-      let selectedSeatNumbers = [];
+        const seats = document.querySelectorAll(".seat");
+        const selectedSeats = document.getElementById("selected-seats");
+        const seatCount = document.getElementById("seat-count");
+        const totalPrice = document.getElementById("total-price");
+        const seatPrice = 22300;
+        let selectedSeatNumbers = [];
 
-      // 좌석 선택 처리
-      seats.forEach(seat => {
-        seat.addEventListener("click", () => {
-          const seatNumber = seat.getAttribute("data-seat");
+        // 이미 예약된 좌석 정보 가져오기
+        const reservedSeatsStringArray = {{ reserved_seats|safe }}; // Django 템플릿에서 전달
+        let reservedSeats = [];
 
-          if (seat.classList.contains("selected")) {
-            seat.classList.remove("selected");
-            selectedSeatNumbers = selectedSeatNumbers.filter(num => num !== seatNumber);
-          } else {
-            if (selectedSeatNumbers.length >= 6) {
-              alert("최대 6개 좌석까지만 선택 가능합니다.");
-              return;
+        // 문자열 배열을 처리하여 숫자 배열로 변환
+        if (reservedSeatsStringArray.length > 0) {
+            reservedSeats = reservedSeatsStringArray
+                .map(group => group.split(',').map(seat => Number(seat.trim()))) // 각각 나누고 숫자로 변환
+                .flat(); // 중첩된 배열을 평탄화
+        }
+
+        console.log("Reserved Seats:", reservedSeats); // 디버깅용 출력
+
+        // 예약된 좌석 비활성화
+        seats.forEach(seat => {
+            const seatNumber = parseInt(seat.getAttribute("data-seat"), 10); // 좌석 번호를 숫자로 변환
+
+            if (reservedSeats.includes(seatNumber)) {
+                seat.classList.add("disabled");
             }
-            seat.classList.add("selected");
-            selectedSeatNumbers.push(seatNumber);
-          }
-
-          selectedSeats.textContent = selectedSeatNumbers.length ? selectedSeatNumbers.join(", ") : "없음";
-          seatCount.textContent = selectedSeatNumbers.length;
-          totalPrice.textContent = (selectedSeatNumbers.length * seatPrice).toLocaleString();
         });
-      });
 
-      // 예약 완료 처리
-      document.querySelector(".reserve-button").addEventListener("click", () => {
-        // 선택된 데이터 생성
-        const reservationData = {
-          departure: "{{ departure }}",
-          arrival: "{{ arrival }}",
-          date: "{{ date }}",
-          departureTime: "{{ schedule.departure_time|date:'H:i' }}",
-          arrivalTime: "{{ schedule.arrival_time|date:'H:i' }}",
-          seatNumber: selectedSeatNumbers.join(","),
-          grade: "일반"
-        };
+        // 좌석 선택 처리
+        seats.forEach(seat => {
+            seat.addEventListener("click", () => {
+                // 이미 예약된 좌석은 선택 불가
+                if (seat.classList.contains("disabled")) {
+                    return;
+                }
 
-        // 서버로 데이터 전송
-        fetch('http://127.0.0.1:8000/reservation/create/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(reservationData)
-        })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(data => {
-          // 성공 시 예약 상세 페이지로 이동
-          alert("예약이 완료되었습니다!");
-          window.location.href = `/reservation_details.html?id=${data.id}`;
-        })
-        .catch(error => {
-          console.error("Error:", error);
-          alert("예약 중 문제가 발생했습니다. 다시 시도해주세요.");
+                const seatNumber = parseInt(seat.getAttribute("data-seat"), 10);
+
+                if (seat.classList.contains("selected")) {
+                    seat.classList.remove("selected");
+                    selectedSeatNumbers = selectedSeatNumbers.filter(num => num !== seatNumber);
+                } else {
+                    if (selectedSeatNumbers.length >= 6) {
+                        alert("최대 6개 좌석까지만 선택 가능합니다.");
+                        return;
+                    }
+                    seat.classList.add("selected");
+                    selectedSeatNumbers.push(seatNumber);
+                }
+
+                // 선택된 좌석 정보 업데이트
+                selectedSeats.textContent = selectedSeatNumbers.length ? selectedSeatNumbers.join(", ") : "없음";
+                seatCount.textContent = selectedSeatNumbers.length;
+                totalPrice.textContent = (selectedSeatNumbers.length * seatPrice).toLocaleString();
+            });
         });
-      });
+
+        // 예약 완료 처리
+        document.querySelector(".reserve-button").addEventListener("click", () => {
+            if (selectedSeatNumbers.length === 0) {
+                alert("최소 한 개의 좌석을 선택해야 합니다.");
+                return;
+            }
+
+            // 선택된 데이터 생성
+            const reservationData = {
+                departure: "{{ departure }}",
+                arrival: "{{ arrival }}",
+                date: "{{ date }}",
+                departureTime: "{{ schedule.departure_time|date:'H:i' }}",
+                arrivalTime: "{{ schedule.arrival_time|date:'H:i' }}",
+                seatNumber: selectedSeatNumbers.join(","), // 선택된 좌석
+                grade: "일반"
+            };
+
+            // 서버로 데이터 전송
+            fetch('http://127.0.0.1:8000/reservation/create/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(reservationData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert("예약이 완료되었습니다!");
+                window.location.href = `/reservation_details.html?id=${data.id}`;
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("예약 중 문제가 발생했습니다. 다시 시도해주세요.");
+            });
+        });
     });
-  </script>
+</script>
+
+
   
 </body>
 </html>

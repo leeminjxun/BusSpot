@@ -8,7 +8,9 @@ class Reservation(models.Model) :
     departure = models.CharField(max_length=10)
     arrival = models.CharField(max_length=10)
 
-    date = models.DateField(auto_now_add=True)
+    # auto_now_add=True 해제
+    date = models.DateField()
+    
     departureTime = models.TimeField()
     arrivalTime = models.TimeField()
 

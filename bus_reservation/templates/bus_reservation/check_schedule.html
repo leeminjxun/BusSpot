@@ -195,7 +195,7 @@
       }
 
       // set_seat.html로 이동
-      const queryParams = `?schedule_id=${scheduleId}&departure=${encodeURIComponent(departure)}&arrival=${encodeURIComponent(arrival)}&date=${encodeURIComponent(date)}`;
+      const queryParams = `?departure=${encodeURIComponent(departure)}&arrival=${encodeURIComponent(arrival)}&date=${encodeURIComponent(date)}&schedule_id=${scheduleId}&`;
       window.location.href = `/set_seat.html/${queryParams}`;
     }
 
